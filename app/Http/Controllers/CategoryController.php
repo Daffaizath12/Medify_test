@@ -2,31 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MasterItem;
 use App\Models\Category;
-use App\Models\CategoryItem;
 use Illuminate\Http\Request;
 
-class MasterItemsController extends Controller
+class CategoryController extends Controller
 {
     public function index()
     {
-        return view('master_items.index.index');
+        return view('master_category.index.index');
     }
 
     public function search(Request $request)
     {
         $kode = $request->kode;
         $nama = $request->nama;
-        $hargamin = $request->hargamin;
-        $hargamax = $request->hargamax;
 
-        $data_search = MasterItem::query();
+        $data_search = Category::query();
 
         if (!empty($kode)) $data_search = $data_search->where('kode', $kode);
         if (!empty($nama)) $data_search = $data_search->where('nama', 'LIKE', '%' . $nama . '%');
-        if (!empty($hargamin)) $data_search = $data_search->where('harga_beli', '>=', $hargamin);
-        if (!empty($hargamix)) $data_search = $data_search->where('harga_beli', '<=', $hargamax);
 
         $data_search = $data_search->orderBy('id')->get();
 
@@ -42,60 +36,48 @@ class MasterItemsController extends Controller
         if ($method == 'new') {
             $item = [];
         } else {
-            $item = MasterItem::find($id);
+            $item = Category::find($id);
         }
         $data['item'] = $item;
         $data['method'] = $method;
-        return view('master_items.form.index', $data);
+        return view('master_category.form.index', $data);
     }
 
     public function singleView($kode)
     {
-        $data['data'] = MasterItem::where('kode', $kode)->first();
-        return view('master_items.single.index', $data);
+        $data['data'] = Category::where('kode', $kode)->first();
+        return view('master_Category.single.index', $data);
     }
 
     public function formSubmit(Request $request, $method, $id = 0)
     {
         if ($method == 'new') {
-            $data_item = new MasterItem;
-            $kode = MasterItem::count('id');
+            $data_item = new Category();
+            $kode = Category::count('id');
             $kode = $kode + 1;
             $kode = str_pad($kode, 5, '0', STR_PAD_LEFT);
             sleep(3);
         } else {
-            $data_item = MasterItem::find($id);
+            $data_item = Category::find($id);
             $kode = $data_item->kode;
         }
 
         $data_item->nama = $request->nama;
-        $data_item->harga_beli = $request->harga_beli;
-        $data_item->laba = $request->laba;
         $data_item->kode = $kode;
-
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $path = $file->store('uploads', 'public');
-            $data_item->foto = $path;
-        }
-
-
-        $data_item->supplier = $request->supplier;
-        $data_item->jenis = $request->jenis;
         $data_item->save();
 
-        return redirect('master-items');
+        return redirect('master-category');
     }
 
     public function delete($id)
     {
-        MasterItem::find($id)->delete();
-        return redirect('master-items');
+        Category::find($id)->delete();
+        return redirect('master-category');
     }
 
     public function updateRandomData()
     {
-        $data = MasterItem::get();
+        $data = Category::get();
         foreach($data as $item)
         {
             $kode = $item->id;
@@ -123,4 +105,5 @@ class MasterItemsController extends Controller
         $random = rand(0,4);
         return $array[$random];
     }
+
 }

@@ -33,6 +33,11 @@
                             <td>{{$data->harga_beli + $data->harga_beli * $data->laba / 100 }}</td>
                         </tr>
                         <tr>
+                            <th>Foto</th>
+                            <td>:</td>
+                            <td><img src="{{ Storage::url($data->foto) }}" width="150" alt="Foto User"></td>
+                        </tr>
+                        <tr>
                             <th>Supplier</th>
                             <td>:</td>
                             <td>{{$data->supplier}}</td>

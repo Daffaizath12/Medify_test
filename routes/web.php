@@ -31,3 +31,15 @@ Route::get('/master-items/delete/{id}', [App\Http\Controllers\MasterItemsControl
 
 
 Route::get('/master-items/update-random-data', [App\Http\Controllers\MasterItemsController::class, 'updateRandomData']);
+
+
+Route::get('/master_categpry', [App\Http\Controllers\CategoryController::class, 'index']);
+Route::get('/master_categpry/search', [App\Http\Controllers\CategoryController::class, 'search']);
+Route::get('/master_categpry/form/{method}/{id?}', [App\Http\Controllers\CategoryController::class, 'formView']);
+Route::post('/master_categpry/form/{method}/{id?}', [App\Http\Controllers\CategoryController::class, 'formSubmit']);
+
+Route::get('/master_categpry/view/{kode}', [App\Http\Controllers\CategoryController::class, 'singleView']);
+Route::get('/master_categpry/delete/{id}', [App\Http\Controllers\CategoryController::class, 'delete']);
+
+
+Route::get('/master_categpry/update-random-data', [App\Http\Controllers\CategoryController::class, 'updateRandomData']);
